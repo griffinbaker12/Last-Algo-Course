@@ -12,20 +12,19 @@ export default class Queue<T> {
         this.head = this.tail = undefined;
         this.length = 0;
     }
-    enqueue2(item: T): void {
-        const node = { value: item } as Node<T>;
-        this.length++;
+    enqueue(item: T): void {
+        const node = { value: item, next: undefined };
 
-        if (!this.tail) {
-            this.tail = node;
-            if (!this.head) {
-                this.head = node;
+        if (!this.head) {
+            this.head = this.tail = node;
+        } else {
+            if (this.tail) {
+                this.tail.next = node;
             }
-            return;
+            this.tail = node;
         }
 
-        this.tail.next = node;
-        this.tail = node;
+        this.length++;
     }
     deque(): T | undefined {
         if (!this.head) return undefined;
@@ -33,16 +32,15 @@ export default class Queue<T> {
         this.length--;
 
         const h = this.head;
-        this.head = h.next;
+        this.head = this.head.next;
 
         // Optional cleanup
         h.next = undefined;
 
-        if (this.length === 0) return undefined;
-
         return h.value;
     }
     peek(): T | undefined {
+        console.log(this.head, this.tail);
         return this.head?.value;
     }
 }
