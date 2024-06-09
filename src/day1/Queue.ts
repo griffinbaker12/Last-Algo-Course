@@ -1,7 +1,7 @@
 type Node<T> = {
-    value: T,
-    next?: Node<T>
-}
+    value: T;
+    next?: Node<T>;
+};
 
 export default class Queue<T> {
     public length: number;
@@ -13,9 +13,10 @@ export default class Queue<T> {
         this.length = 0;
     }
     enqueue(item: T): void {
-        const node = { value: item, next: undefined };
+        const node = { value: item };
 
-        if (!this.head) {
+        // works now because we reset the tail as well...
+        if (!this.tail) {
             this.head = this.tail = node;
         } else {
             if (this.tail) {
@@ -33,6 +34,10 @@ export default class Queue<T> {
 
         const h = this.head;
         this.head = this.head.next;
+
+        if (!this.head) {
+            this.tail = undefined;
+        }
 
         // Optional cleanup
         h.next = undefined;
